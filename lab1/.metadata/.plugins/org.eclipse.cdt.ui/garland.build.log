@@ -1,0 +1,10 @@
+14:54:30 **** Incremental Build of configuration Debug for project garland ****
+make -j12 all 
+arm-none-eabi-size   garland.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6556	     84	   1580	   8220	   201c	garland.elf
+Finished building: default.size.stdout
+ 
+
+14:54:30 Build Finished. 0 errors, 0 warnings. (took 176ms)
+

@@ -1,0 +1,66 @@
+#include "button_driver.h"
+#include "stm32f4xx_hal.h"
+
+// button on PC15
+#define BUTTON_GPIO_PORT GPIOC
+#define BUTTON_GPIO_PIN  GPIO_PIN_15
+
+// debounce parameters
+#define SAMPLE_MS 10            // sampling interval (ms)
+#define PRESSED_COUNT 3        // counts to consider pressed (3*10ms = 30ms)
+#define RELEASED_COUNT 0       // threshold for released (we will compare)
+
+static uint32_t last_sample_time = 0;
+static int16_t cnt = 0;
+static bool pressed_flag = false;
+static bool last_reported_press = false;
+
+void BUTTON_Init(void)
+{
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = BUTTON_GPIO_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL; // adjust if board requires pullup/pulldown
+    HAL_GPIO_Init(BUTTON_GPIO_PORT, &GPIO_InitStruct);
+    last_sample_time = HAL_GetTick();
+    cnt = 0;
+    pressed_flag = false;
+    last_reported_press = false;
+}
+
+void BUTTON_Process(void)
+{
+    uint32_t t = HAL_GetTick();
+    if ((t - last_sample_time) < SAMPLE_MS) return;
+    last_sample_time = t;
+
+    GPIO_PinState state = HAL_GPIO_ReadPin(BUTTON_GPIO_PORT, BUTTON_GPIO_PIN);
+    if(state == GPIO_PIN_SET) {
+        if(cnt < 1000) cnt++;
+    } else {
+        if(cnt > -1000) cnt--;
+    }
+
+    // simple hysteresis: press when cnt >= PRESSED_COUNT, release when cnt <= 0
+    if(cnt >= PRESSED_COUNT && !pressed_flag) {
+        pressed_flag = true;
+        last_reported_press = true; // signal one press event
+    } else if(cnt <= 0 && pressed_flag) {
+        pressed_flag = false;
+    }
+}
+
+bool BUTTON_WasPressed(void)
+{
+    if(last_reported_press) {
+        last_reported_press = false;
+        return true;
+    }
+    return false;
+}
+
+bool BUTTON_IsPressed(void)
+{
+    return pressed_flag;
+}
