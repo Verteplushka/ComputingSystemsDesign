@@ -49,6 +49,9 @@ bool USART_DRV_TxBuf(const uint8_t *buf, uint16_t len)
 {
     if(!huart_ptr) return false;
 
+    uint32_t prim = __get_PRIMASK();
+    __disable_irq();
+
     for(uint16_t i = 0; i < len; i++) {
         uint16_t next = (tx_head + 1) % UART_TX_BUF_SIZE;
         if(next == tx_tail) {
@@ -58,6 +61,8 @@ bool USART_DRV_TxBuf(const uint8_t *buf, uint16_t len)
         tx_ring[tx_head] = buf[i];
         tx_head = next;
     }
+
+    __set_PRIMASK(prim);
 
     if(interrupts_enabled) {
         if(!tx_busy) {
@@ -89,8 +94,13 @@ bool USART_DRV_PollGetByte(uint8_t *out)
     if(USART_DRV_IsInterruptsEnabled()) {
         if(rx_head == rx_tail) return false;
 
+        uint32_t prim = __get_PRIMASK();
+        __disable_irq();
+
         *out = rx_ring[rx_tail++];
         if(rx_tail >= UART_RX_BUF_SIZE) rx_tail = 0;
+
+        __set_PRIMASK(prim);
 
         if(echo) {
             uint8_t ch = *out;
