@@ -1,0 +1,6 @@
+../Core/Src/main.c:81:6:uart_println	16	static
+../Core/Src/main.c:87:6:set_led_pwm	24	static
+../Core/Src/main.c:111:6:handle_config_char	56	static
+../Core/Src/main.c:203:5:main	48	static
+../Core/Src/main.c:289:6:SystemClock_Config	88	static
+../Core/Src/main.c:337:6:Error_Handler	4	static,ignoring_inline_asm
