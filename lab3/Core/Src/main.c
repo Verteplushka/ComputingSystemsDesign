@@ -114,8 +114,8 @@ void handle_config_char(char c)
   {
     edit_slot = c - '1';
     set_led_pwm(slots[edit_slot]);
-    uart_println("Select LED color: a(green), b(yellow), c(red)");
     mode = MODE_CONFIG_COLOR;
+    uart_println("Select LED color: a(green), b(yellow), c(red)");
   }
   else if ((mode == MODE_CONFIG_COLOR) && (c == 'a' || c == 'b' || c == 'c'))
   {
@@ -156,8 +156,8 @@ void handle_config_char(char c)
   }
   else if (c == '\r')
   {
+	mode = MODE_WORK;
     uart_println("Saved, back to WORK mode");
-    mode = MODE_WORK;
   }
   else
   {
