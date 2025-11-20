@@ -1,0 +1,9 @@
+../Core/Src/usart_drv.c:22:6:USART_DRV_Init	16	static
+../Core/Src/usart_drv.c:32:6:USART_DRV_EnableInterrupts	16	static
+../Core/Src/usart_drv.c:46:6:USART_DRV_IsInterruptsEnabled	4	static
+../Core/Src/usart_drv.c:48:6:USART_DRV_TxBuf	40	static,ignoring_inline_asm
+../Core/Src/usart_drv.c:77:6:USART_DRV_PollTx	4	static
+../Core/Src/usart_drv.c:87:6:USART_DRV_TxStr	16	static
+../Core/Src/usart_drv.c:92:6:USART_DRV_PollGetByte	32	static,ignoring_inline_asm
+../Core/Src/usart_drv.c:124:6:USART_DRV_SetEcho	16	static
+../Core/Src/usart_drv.c:126:6:USART_DRV_IRQ_Handler	16	static
