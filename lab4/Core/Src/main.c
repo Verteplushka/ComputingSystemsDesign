@@ -72,14 +72,6 @@ LedSlot_t slots[9] = {
     {LED_GREEN, 10}, {LED_GREEN, 40}, {LED_GREEN, 100}, {LED_YELLOW, 10}, {LED_YELLOW, 40}, {LED_YELLOW, 100}, {LED_RED, 10}, {LED_RED, 40}, {LED_RED, 100}};
 
 uint8_t selected_slot = 0;
-uint16_t i2CAddress = 0xE2;
-uint16_t writeAddress = 0x2;
-uint16_t readAddress = 0x0;
-uint16_t configAddress = 0x3;
-uint8_t configData = 0x0E;
-uint8_t writeData = 0x01;
-uint8_t buff;
-uint32_t timeout = 10000;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
